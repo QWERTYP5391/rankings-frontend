@@ -12,6 +12,7 @@ class App extends Component {
         super(props);
 
         this.state = {
+            quickFilterText: null,
             columnDefs: [
                 {headerName: 'Name', field: 'name'},
                 {headerName: 'Position', field: 'position'},
@@ -29,20 +30,20 @@ class App extends Component {
         return (
             <div>
                 <div>
-                    <input
-                        type="text"
-                    />
+                    <input type="text" onChange={this.onQuickFilterText} placeholder="Type text to filter..."/>
                 </div>
                 <div
                     className="ag-theme-balham"
                     style={{height: '900px', width: '900px'}}
                 >
                     <AgGridReact
+                        onGridReady={this.onGridReady}
                         pagination={true}
                         sortable={true}
                         filter={true}
                         columnDefs={this.state.columnDefs}
                         rowData={this.state.rowData}
+                        quickFilterText={this.state.quickFilterText}
                     >
                     </AgGridReact>
                 </div>
@@ -55,6 +56,16 @@ class App extends Component {
             .then(result => result.json())
             .then(rowData => this.setState({rowData}))
     }
+
+    onGridReady = (params) => {
+        this.api = params.api;
+        this.columnApi = params.columnApi;
+    };
+
+    onQuickFilterText = (event) => {
+        this.api.setQuickFilter(event.target.value);
+    };
+
 
 
 }
