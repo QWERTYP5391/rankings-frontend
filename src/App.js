@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-import logo from './logo.svg';
 import './App.css';
 
 import {AgGridReact} from 'ag-grid-react';
@@ -12,16 +11,15 @@ class App extends Component {
         super(props);
 
         this.state = {
-            quickFilterText: null,
             columnDefs: [
                 {headerName: 'Name', field: 'name'},
                 {headerName: 'Position', field: 'position'},
                 {headerName: 'Overall Rank', field: 'rankOverall'},
                 {headerName: 'Position Rank', field: 'rankPos'},
-                {headerName: 'Team', field: 'team'}
+                {headerName: 'Team', field: 'team'},
+                {headerName: 'Standard Deviation', field: 'standDev'}
             ],
-            rowData: [],
-            api: {}
+            rowData: []
         }
     }
 
@@ -29,8 +27,9 @@ class App extends Component {
     render() {
         return (
             <div>
-                <div>
-                    <input type="text" onChange={this.onQuickFilterText} placeholder="Type text to filter..."/>
+                <div className="header">Weighted Consensus NBA Fantasy Draft Rankings</div>
+                <div className="header">
+                    <input type="text" onChange={this.onQuickFilterText} placeholder="Filter..."/>
                 </div>
                 <div
                     className="ag-theme-balham"
@@ -38,12 +37,10 @@ class App extends Component {
                 >
                     <AgGridReact
                         onGridReady={this.onGridReady}
-                        pagination={true}
-                        sortable={true}
-                        filter={true}
+                        enableSorting={true}
+                        enableFilter={true}
                         columnDefs={this.state.columnDefs}
                         rowData={this.state.rowData}
-                        quickFilterText={this.state.quickFilterText}
                     >
                     </AgGridReact>
                 </div>
@@ -65,7 +62,6 @@ class App extends Component {
     onQuickFilterText = (event) => {
         this.api.setQuickFilter(event.target.value);
     };
-
 
 
 }
